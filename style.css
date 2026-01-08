@@ -5,44 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fancy Ape Studio | Open Editions</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --ink: #111111;
+            --accent: #bc9c22;
+            --soft-gray: #f9f9f9;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { cursor: none !important; } /* Hides real cursor for the custom one */
+
+        body {
+            margin: 0; background: var(--bg); color: var(--ink);
+            font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 15px; height: 15px; border: 1px solid var(--ink);
+            border-radius: 50%; position: fixed; pointer-events: none;
+            z-index: 9999; transition: transform 0.15s ease, background 0.15s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Nav */
+        .nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(15px); background: rgba(255, 255, 255, 0.8);
+            z-index: 1000; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { font-weight: 600; letter-spacing: 0.4em; font-size: 0.7rem; }
+
+        /* Hero */
+        .hero {
+            padding: clamp(150px, 25vh, 300px) 20px 100px; text-align: center;
+            animation: reveal 1.5s var(--ease) forwards;
+        }
+
+        .h1 {
+            font-family: 'Playfair Display', serif !important;
+            font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 400;
+            font-style: italic; line-height: 0.85; margin: 0;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 100px; max-width: 1600px; margin: 0 auto 150px; padding: 0 50px;
+        }
+
+        .art-card {
+            text-decoration: none; color: inherit; opacity: 0;
+            animation: reveal 1.5s var(--ease) 0.3s forwards;
+            perspective: 1000px;
+        }
+
+        .img-wrap {
+            background: var(--soft-gray); padding: 80px; border: 1px solid #eee;
+            transition: transform 0.1s linear, box-shadow 0.5s var(--ease);
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .img-wrap img {
+            width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .btn {
+            display: inline-block; margin-top: 25px; padding: 18px 50px;
+            border: 1px solid var(--ink); font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.3em; transition: 0.4s var(--ease);
+        }
+
+        .art-card:hover .btn { background: var(--ink); color: #fff; }
+        .art-card:hover ~ .cursor { transform: translate(-50%, -50%) scale(4); background: rgba(0,0,0,0.05); }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
+    <div class="cursor"></div>
+
     <nav class="nav">
         <div class="logo">FANCY APE STUDIO</div>
-        <div class="nav-links">
-            <a href="#">COLLECTIONS</a>
-            <a href="#">ABOUT</a>
-            <a href="#">CART (0)</a>
-        </div>
+        <div style="font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.6;">OPEN EDITIONS // 2026</div>
     </nav>
 
     <section class="hero">
-        <span class="sub-header">Digital Provenance // Physical Mastery</span>
-        <h1 class="h1">Open Editions</h1>
-        <p class="hero-text">
-            Museum-grade pigment prints optimized for zero-latency browsing. 
-            Curated for the modern collector.
-        </p>
+        <span style="letter-spacing: 0.5em; text-transform: uppercase; font-size: 0.65rem; opacity: 0.5;">Digital Provenance // Physical Mastery</span>
+        <h1 class="h1">The Archive</h1>
     </section>
 
     <div class="grid">
         <a class="art-card" href="https://shop.fancyape.com/open-editions">
-            <div class="img-wrap">
-                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200" alt="The Archive Series">
+            <div class="img-wrap" id="tilt-card">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200" alt="Art">
             </div>
-            <div class="card-meta">
-                <h3 class="card-title">The Archive Series</h3>
+            <div style="text-align: center; margin-top: 40px;">
+                <h3 style="font-family: 'Playfair Display'; font-size: 2.2rem; font-style: italic; font-weight: 400; margin: 0;">Series No. 01</h3>
                 <div class="btn">View Collection</div>
             </div>
         </a>
-        
-        </div>
+    </div>
 
-    <footer>
-        &copy; 2026 FANCY APE STUDIO &bull; ARCHITECTURE BY VERCEL &bull; FULFILLMENT BY ASF
-    </footer>
+    <script>
+        // Custom Cursor Movement
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
+        // 3D Tilt Effect
+        const card = document.querySelector('.art-card');
+        const wrap = document.querySelector('.img-wrap');
+
+        card.addEventListener('mousemove', (e) => {
+            const { left, top, width, height } = card.getBoundingClientRect();
+            const x = (e.clientX - left) / width - 0.5;
+            const y = (e.clientY - top) / height - 0.5;
+            wrap.style.transform = `rotateY(${x * 15}deg) rotateX(${y * -15}deg) translateY(-10px)`;
+            cursor.style.transform = 'translate(-50%, -50%) scale(4)';
+            cursor.style.background = 'rgba(0,0,0,0.05)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            wrap.style.transform = `rotateY(0deg) rotateX(0deg) translateY(0)`;
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursor.style.background = 'transparent';
+        });
+    </script>
 </body>
 </html>
