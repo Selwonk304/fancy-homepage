@@ -3,96 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fancy Ape | Valuation Engine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Fancy Ape | Intelligence Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="bg-glow-1"></div>
-    <div class="bg-glow-2"></div>
 
-    <nav class="nav">
-        <div class="logo">FANCY APE™</div>
-        <div class="nav-links">
-            <a href="https://shop.fancyape.com">COLLECTIONS</a>
-            <a href="#">ENGINE</a>
-            <a href="#">PORTFOLIO</a>
+    <div id="cursor"></div>
+    <div class="glow-orb" id="glow"></div>
+
+    <header style="height: 85vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%;">
+        <div class="h1-container"><h1 class="h1">Fancy Ape</h1></div>
+        <div class="h1-container"><h1 class="h1">Studio.</h1></div>
+        <div style="display: flex; align-items: center; margin-top: 40px; gap: 20px;">
+            <div style="width: 40px; height: 1px; background: var(--accent);"></div>
+            <p style="letter-spacing: 0.6em; text-transform: uppercase; font-size: 0.6rem; opacity: 0.6;">
+                Physical Provenance × AI Valuation
+            </p>
         </div>
+    </header>
+
+    <nav class="nav-grid">
+        <a href="https://shop.fancyape.com" class="nav-link">
+            <span style="font-size: 0.6rem; letter-spacing: 0.3em; opacity: 0.4; display: block; margin-bottom: 20px;">01 // RETAIL</span>
+            <h2 style="font-family: 'Bodoni Moda'; font-style: italic; font-size: 3rem;">Collections</h2>
+        </a>
+        <a href="https://fave.fancyape.com" class="nav-link">
+            <span style="font-size: 0.6rem; letter-spacing: 0.3em; opacity: 0.4; display: block; margin-bottom: 20px;">02 // ENGINE</span>
+            <h2 style="font-family: 'Bodoni Moda'; font-style: italic; font-size: 3rem;">F.A.V.E. Tool</h2>
+        </a>
     </nav>
 
-    <main class="engine-container">
-        <div class="glass-orb">
-            <div class="orb-content">
-                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800" alt="Active Asset" id="main-art">
-                <div class="scan-line"></div>
-            </div>
-        </div>
-        
-        <h1 class="engine-title">Valuation Engine</h1>
-        <p class="sub-brand">SUB-BRAND ALL EXPERIENCE</p>
-
-        <div class="pill-nav">
-            <div class="pill active">Art</div>
-            <div class="pill">provenance</div>
-            <div class="pill">physical</div>
-            <div class="pill">mastery</div>
-        </div>
-
-        <div class="input-container">
-            <div class="input-wrapper">
-                <span class="label">Appraisal-input</span>
-                <div class="bar-flex">
-                    <input type="text" placeholder="Appraise Art asset..." id="asset-input">
-                    <button class="scan-btn">SCAN NOW</button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        © 2026 FANCY APE STUDIO • ARCHITECTURE BY VERCEL • FULFILLMENT BY ASF
-    </footer>
-
     <script>
-        const orb = document.querySelector('.glass-orb');
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 40;
-            const y = (window.innerHeight / 2 - e.pageY) / 40;
-            orb.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        const cursor = document.getElementById('cursor');
+        const glow = document.getElementById('glow');
+
+        document.addEventListener('mousemove', e => {
+            // Move Cursor
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Move Background Glow (with lag for smoothness)
+            glow.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
         });
-    const orb = document.querySelector('.glass-orb');
-const scanBtn = document.querySelector('.scan-btn');
-const assetInput = document.getElementById('asset-input');
-const scanLine = document.querySelector('.scan-line');
 
-// 3D Tilt Logic
-document.addEventListener('mousemove', (e) => {
-    const x = (window.innerWidth / 2 - e.pageX) / 40;
-    const y = (window.innerHeight / 2 - e.pageY) / 40;
-    orb.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-});
-
-// Simulated Valuation Logic
-scanBtn.addEventListener('click', () => {
-    const val = assetInput.value;
-    if (!val) return alert("Please enter an asset name");
-
-    // UI Feedback: Speed up scan line
-    scanBtn.innerText = "ANALYZING...";
-    scanLine.style.animationDuration = "0.5s";
-    scanLine.style.background = "#06b6d4"; // Change color to cyan during scan
-
-    setTimeout(() => {
-        // Generate a random valuation for the demo
-        const estimatedValue = (Math.random() * (5000 - 500) + 500).toLocaleString(undefined, {minimumFractionDigits: 2});
-        
-        // Reset UI and show result
-        scanLine.style.animationDuration = "3s";
-        scanLine.style.background = "var(--accent)";
-        scanBtn.innerText = "SCAN NOW";
-        
-        alert(`F.A.V.E. Intelligence Report:\nAsset: ${val}\nEstimated Market Value: $${estimatedValue} USD\nConfidence Score: 94%`);
-    }, 2000);
-});</script>
+        // Interactive "Hiss" on links
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(5)';
+                cursor.style.background = 'white';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.background = 'var(--accent)';
+            });
+        });
+    </script>
 </body>
 </html>
