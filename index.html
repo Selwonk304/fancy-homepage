@@ -7,38 +7,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root { --cyan: #22d3ee; --gold: #bc9c22; }
-        body, html { margin: 0; padding: 0; background: #000; font-family: 'Inter', sans-serif; overflow: hidden; color: #fff; height: 100%; }
+        body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow: hidden; color: #fff; height: 100%; }
 
-        /* THE BACKDROP: Fixed for iPhone & Desktop */
+        /* VIDEO: Critical Fixes for iPhone & CSP Blocks */
         .video-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; z-index: -1; 
-            opacity: 0; /* JS will reveal this */
-            transition: opacity 2s ease;
+            opacity: 0; /* Start hidden to allow safe reveal */
+            background: #000;
         }
 
         .terminal-hud { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; padding: 20px; }
         
-        /* Spacing Fixes for Mobile & Desktop */
-        .brand-reveal { font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 800; margin-bottom: 4rem; opacity: 0; text-align: center; letter-spacing: 0.1em; }
+        .brand-reveal { font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 800; margin-bottom: 4.5rem; opacity: 0; text-align: center; }
         
+        /* 50px Gap Spacing for Overlap Fix */
         .capsule-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 50px; opacity: 0; }
         
         .fave-capsule { 
-            background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 8px; display: flex; align-items: center; 
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 10px; display: flex; align-items: center; 
         }
         
         input { background: none; border: none; color: #fff; flex: 1; padding: 0 20px; font-size: 1.1rem; outline: none; min-width: 0; }
+        .run-scan { background: #fff; color: #000; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; white-space: nowrap; }
         
-        .run-scan { background: #fff; color: #000; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; white-space: nowrap; font-size: 0.8rem; }
-        
-        .materialized-link { align-self: center; border: 1px solid var(--gold); padding: 16px 40px; text-decoration: none; color: var(--gold); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.2em; transition: 0.3s; }
-        .materialized-link:hover { background: var(--gold); color: #000; }
+        .materialized-link { align-self: center; border: 1px solid var(--gold); padding: 16px 40px; text-decoration: none; color: var(--gold); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.2em; }
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline preload="auto" class="video-bg" id="vid">
+    <video autoplay muted loop playsinline preload="auto" class="video-bg" id="vid" oncanplay="this.play()" onloadedmetadata="this.play()">
         <source src="https://cdn.midjourney.com/video/0f976d14-b21f-4cce-85ba-5fa029d4412d/3.mp4" type="video/mp4">
     </video>
 
@@ -46,13 +44,13 @@
         <h1 class="brand-reveal">FANCY APE™ INTELLIGENCE</h1>
         
         <div class="capsule-wrapper" id="hud">
-            <div style="display:flex; justify-content: space-between; padding: 0 20px; font-size: 0.7rem; color: var(--cyan); font-weight: 800; letter-spacing: 0.1em;">
+            <div style="display:flex; justify-content: space-between; padding: 0 20px; font-size: 0.7rem; color: var(--cyan); font-weight: 800;">
                 <span>ⓘ F.A.V.E. CONVICTION ENGINE</span>
                 <span id="score">--%</span>
             </div>
             
             <div class="fave-capsule">
-                <input type="text" placeholder="APPRAISE ARTIST..." id="art-input" spellcheck="false">
+                <input type="text" placeholder="APPRAISE ARTIST..." id="art-input" autocomplete="off" spellcheck="false">
                 <button class="run-scan" id="trigger">RUN_SCAN</button>
             </div>
             
@@ -61,28 +59,26 @@
     </main>
 
     <script>
-        // FAIL-SAFE REVEAL: Runs even if video is blocked
-        window.onload = () => {
+        // CSP-Safe Reveal: No eval, No complex filters
+        window.addEventListener('load', function() {
             const vid = document.getElementById('vid');
-            const hud = document.getElementById('hud');
-            
-            // Force reveal everything regardless of video status
+            vid.play(); // Force play for mobile
+
             const tl = gsap.timeline();
-            
-            tl.to(".video-bg", { opacity: 0.4, duration: 2 }) // Reveal video layer
-              .to(".brand-reveal", { opacity: 1, y: -20, duration: 1.2, ease: "power3.out" }, "-=1.5")
+            // Using opacity instead of brightness to bypass GPU security blocks
+            tl.to(".video-bg", { opacity: 0.4, duration: 2, delay: 1 })
+              .to(".brand-reveal", { opacity: 1, y: -20, duration: 1.2 }, "-=1.5")
               .to("#hud", { opacity: 1, duration: 1 }, "-=0.8");
 
-            // Simulation Engine
             document.getElementById('trigger').onclick = function() {
                 if(!document.getElementById('art-input').value) return;
                 this.innerText = "SCANNING...";
                 let obj = { n: 0 };
-                gsap.to(obj, { n: 94.8, duration: 3.5, ease: "power2.inOut", onUpdate: () => {
+                gsap.to(obj, { n: 94.8, duration: 3.5, onUpdate: () => {
                     document.getElementById('score').innerHTML = obj.n.toFixed(1) + "%";
                 }, onComplete: () => { this.innerText = "COMPLETE"; }});
             };
-        };
+        });
     </script>
 </body>
 </html>
