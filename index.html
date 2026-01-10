@@ -9,23 +9,21 @@
         :root { --cyan: #22d3ee; --gold: #bc9c22; }
         body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; height: 100%; overflow: hidden; color: #fff; }
 
-        /* VIDEO: Fail-safe reveal using CSS instead of JS */
+        /* VIDEO: Fail-safe reveal */
         .video-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; object-position: center; z-index: -1; 
             background: #000;
             animation: safe-reveal 2s ease-in forwards;
-            animation-delay: 1s; /* The 1s dark start you wanted */
+            animation-delay: 1s; 
             opacity: 0;
         }
 
-        @keyframes safe-reveal {
-            to { opacity: 0.4; }
-        }
+        @keyframes safe-reveal { to { opacity: 0.4; } }
 
         .terminal-hud { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; padding: 20px; }
         
-        /* UI Reveal using CSS to bypass JS security blocks */
+        /* UI Reveal */
         .brand-reveal { 
             font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 800; margin-bottom: 4.5rem; text-align: center;
             opacity: 0; transform: translateY(20px);
@@ -40,9 +38,7 @@
             animation-delay: 2s;
         }
 
-        @keyframes ui-reveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes ui-reveal { to { opacity: 1; transform: translateY(0); } }
 
         .fave-capsule { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 10px; display: flex; align-items: center; }
         input { background: none; border: none; color: #fff; flex: 1; padding: 0 20px; font-size: 1.1rem; outline: none; min-width: 0; }
@@ -52,7 +48,8 @@
 </head>
 <body>
     <video autoplay muted loop playsinline preload="auto" class="video-bg" id="vid" onloadeddata="this.play();">
-        <source src="assets/fave-bg.mp4" type="video/mp4">
+        <source src="./assets/fave-bg.mp4" type="video/mp4">
+        <source src="/assets/fave-bg.mp4" type="video/mp4">
     </video>
 
     <main class="terminal-hud">
@@ -71,8 +68,7 @@
     </main>
 
     <script>
-        // Only the button logic stays in JS
-        // This avoids triggering the 'eval' CSP block on page load
+        // Production Script
         document.getElementById('trigger').onclick = function() {
             const input = document.getElementById('art-input');
             if(!input.value) return;
