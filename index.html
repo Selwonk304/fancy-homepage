@@ -4,152 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fancy Ape™ | F.A.V.E. Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=Bodoni+Moda:ital,wght@1,700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
     <style>
         :root { --cyan: #22d3ee; --gold: #bc9c22; }
+        body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow: hidden; color: #fff; }
         
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #000; font-family: 'Inter', sans-serif; 
-            overflow: hidden; color: #fff; 
-        }
-
-        /* VIDEO: Fixed Scene Framing & Initial Dark State */
+        /* Fixed Video: No zoom, centered scene */
         .video-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; object-position: center; z-index: -1; 
-            filter: brightness(0); /* Cinematic Start */
+            opacity: 0; /* Start invisible for the reveal */
             background: #000;
         }
 
-        .terminal-hud { 
-            height: 100vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            z-index: 10; position: relative; 
-        }
+        .terminal-hud { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; position: relative; }
+        .brand-reveal { font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; margin-bottom: 5rem; opacity: 0; }
         
-        .brand-reveal { 
-            font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 800; 
-            letter-spacing: 0.15em; margin-bottom: 5rem; 
-            opacity: 0; transform: translateY(40px); 
-        }
-
-        /* CAPSULE: Corrected 50px Overlap Logic */
-        .capsule-wrapper { 
-            width: 90vw; max-width: 850px; display: flex; 
-            flex-direction: column; gap: 50px; align-items: center; 
-            opacity: 0; transform: translateY(30px);
-        }
-
-        .fave-capsule { 
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; 
-            padding: 14px; display: flex; width: 100%; align-items: center; 
-        }
-
-        input { 
-            background: none; border: none; color: #fff; flex: 1; 
-            padding: 0 30px; font-size: 1.15rem; outline: none; 
-            font-family: 'Inter', sans-serif;
-        }
-
-        .run-scan { 
-            background: #fff; color: #000; border: none; padding: 18px 50px; 
-            border-radius: 50px; font-weight: 800; cursor: pointer; 
-            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
-        }
-        .run-scan:hover { 
-            background: var(--cyan); 
-            box-shadow: 0 0 40px rgba(34, 211, 238, 0.6); 
-            transform: scale(1.05);
-        }
-
-        .materialized-link { 
-            border: 1px solid var(--gold); padding: 20px 45px; text-decoration: none; 
-            color: var(--gold); font-size: 0.75rem; font-weight: 800; 
-            letter-spacing: 0.3em; transition: 0.4s;
-        }
-        .materialized-link:hover { background: var(--gold); color: #000; }
-
-        .protocol { 
-            margin-top: 25px; font-size: 0.7rem; letter-spacing: 0.4em; 
-            color: rgba(255,255,255,0.5); font-weight: 400;
-        }
-
-        /* F.A.V.E. Glow */
-        .cyan-text { color: var(--cyan); text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+        .capsule-wrapper { width: 90vw; max-width: 850px; display: flex; flex-direction: column; gap: 50px; align-items: center; opacity: 0; }
+        .fave-capsule { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 12px; display: flex; width: 100%; align-items: center; }
+        input { background: none; border: none; color: #fff; flex: 1; padding: 0 25px; font-size: 1.1rem; outline: none; }
+        .run-scan { background: #fff; color: #000; border: none; padding: 18px 45px; border-radius: 50px; font-weight: 800; cursor: pointer; }
+        .materialized-link { border: 1px solid var(--gold); padding: 18px 40px; text-decoration: none; color: var(--gold); font-size: 0.75rem; font-weight: 800; }
     </style>
 </head>
 <body>
-
-    <video autoplay muted loop playsinline class="video-bg">
+    <video autoplay muted loop playsinline class="video-bg" id="bg-video">
         <source src="https://cdn.midjourney.com/video/0f976d14-b21f-4cce-85ba-5fa029d4412d/3.mp4" type="video/mp4">
     </video>
 
     <main class="terminal-hud">
         <h1 class="brand-reveal">FANCY APE™ INTELLIGENCE</h1>
-
         <div class="capsule-wrapper">
-            <div style="display:flex; justify-content: space-between; width: 100%; font-size: 0.75rem; font-weight: 800; padding: 0 20px;">
-                <span class="cyan-text">ⓘ F.A.V.E. CONVICTION ENGINE</span>
-                <span id="score" class="cyan-text">--%</span>
+            <div style="display:flex; justify-content: space-between; width: 100%; font-size: 0.7rem; color: var(--cyan);">
+                <span>ⓘ F.A.V.E. CONVICTION ENGINE</span>
+                <span id="score">--%</span>
             </div>
-
             <div class="fave-capsule">
-                <input type="text" placeholder="APPRAISE ARTIST OR WORK..." id="art-input" spellcheck="false" autocomplete="off">
+                <input type="text" placeholder="APPRAISE ARTIST OR WORK..." id="art-input">
                 <button class="run-scan" id="trigger">RUN_FAVE_SCAN</button>
             </div>
-
             <a href="https://shop.fancyape.com" class="materialized-link">SEE THE MATERIALIZED COLLECTION →</a>
-            
-            <div class="protocol">✦ PROTOCOL 1.4 // LIBERATING ARTISTS THROUGH DATA</div>
         </div>
     </main>
 
     <script>
-        // MASTER BOOT SEQUENCE
-        window.addEventListener('load', () => {
-            const tl = gsap.timeline({ delay: 1.5 }); // Cinematic 1.5s Dark Start
+        // Use a CSP-Safe reveal pattern
+        window.onload = () => {
+            const video = document.getElementById('bg-video');
+            const tl = gsap.timeline();
 
-            // 1. The Flicker Reveal Unveil
-            tl.to(".video-bg", { filter: "brightness(0.9)", duration: 0.06 })
-              .to(".video-bg", { filter: "brightness(0.15)", duration: 0.12 })
-              .to(".video-bg", { filter: "brightness(0.4)", duration: 1.2, ease: "power2.in" })
-              
-            // 2. HUD Elements Entrance
-              .to(".brand-reveal", { opacity: 1, y: 0, duration: 1.5, ease: "expo.out" }, "-=0.4")
-              .to(".capsule-wrapper", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, "-=1");
+            // Reveal video with a flicker effect after 1.5s dark start
+            tl.to(video, { opacity: 0.4, duration: 0.1, repeat: 3, yoyo: true, delay: 1.5 })
+              .to(video, { opacity: 0.5, duration: 1 })
+              .to(".brand-reveal", { opacity: 1, y: -20, duration: 1 }, "-=0.5")
+              .to(".capsule-wrapper", { opacity: 1, duration: 1 }, "-=0.8");
 
-            // 3. F.A.V.E. Valuation Simulation
-            const scanBtn = document.getElementById('trigger');
-            scanBtn.addEventListener('click', () => {
-                const query = document.getElementById('art-input').value;
-                if(!query) {
-                    gsap.to(".fave-capsule", { x: 10, repeat: 3, yoyo: true, duration: 0.05 });
-                    return;
-                }
-
-                scanBtn.innerText = "QUERYING ARCHIVES...";
-                scanBtn.style.pointerEvents = "none";
-                
-                let scoreObj = { n: 0 };
-                gsap.to(scoreObj, {
-                    n: 94.8, 
-                    duration: 4.5,
-                    ease: "power4.inOut",
-                    onUpdate: () => {
-                        document.getElementById('score').innerText = scoreObj.n.toFixed(1) + "%";
-                    },
-                    onComplete: () => {
-                        scanBtn.innerText = "SCAN COMPLETE";
-                        scanBtn.style.background = "var(--cyan)";
-                    }
+            document.getElementById('trigger').onclick = () => {
+                if(!document.getElementById('art-input').value) return;
+                let obj = { val: 0 };
+                gsap.to(obj, { 
+                    val: 94.8, 
+                    duration: 3, 
+                    onUpdate: () => { document.getElementById('score').innerHTML = obj.val.toFixed(1) + "%"; } 
                 });
-            });
-        });
+            };
+        };
     </script>
 </body>
 </html>
