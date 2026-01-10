@@ -1,6 +1,6 @@
 :root {
-    --bg: #000;
-    --ink: #fff;
+    --bg: #000000;
+    --ink: #ffffff;
     --accent: #bc9c22;
     --intel-blue: #55daff;
     --glass: rgba(255, 255, 255, 0.05);
@@ -13,70 +13,70 @@ body, html {
     font-family: 'Inter', sans-serif; overflow: hidden;
 }
 
-/* Cinematic Video Backdrop */
+/* VIDEO POSITIONING */
 .video-bg {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: -1; opacity: 0.6; filter: brightness(0.4);
+    object-fit: cover; z-index: -1; 
+    filter: brightness(0.3) saturate(0.7);
 }
 
-/* Terminal HUD Overlay */
-.terminal-overlay {
+/* TERMINAL HUD */
+.terminal-hud {
     height: 100vh; display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
     padding: 20px; text-align: center;
 }
 
-.welcome-msg {
+.brand-reveal {
     font-size: 0.7rem; letter-spacing: 0.8em; text-transform: uppercase;
     margin-bottom: 60px; opacity: 0.8; font-weight: 300;
 }
 
-/* The FAVE Command Capsule */
-.fave-capsule {
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 10px 30px;
-    display: flex; align-items: center;
-    width: 100%; max-width: 800px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
-    transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+.capsule-wrapper { width: 100%; max-width: 800px; }
+
+.hud-stats {
+    display: flex; justify-content: space-between; 
+    font-size: 0.6rem; letter-spacing: 0.2em; font-weight: 800;
+    margin-bottom: 15px; padding: 0 15px;
 }
 
-.fave-capsule:hover { border-color: var(--intel-blue); box-shadow: 0 0 50px rgba(85, 218, 255, 0.2); }
+.cyan-glow { color: var(--intel-blue); text-shadow: 0 0 10px var(--intel-blue); }
+
+/* FAVE CAPSULE */
+.fave-capsule {
+    background: var(--glass); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 100px;
+    padding: 8px; display: flex; align-items: center;
+}
+
+.icon-tray { display: flex; gap: 15px; padding: 0 20px; opacity: 0.4; }
 
 input {
     background: none; border: none; color: #fff; flex: 1;
-    font-size: 1rem; padding: 15px; outline: none; letter-spacing: 0.05em;
+    font-size: 1rem; padding: 15px; outline: none;
 }
 
-.scan-btn {
-    background: #fff; color: #000; border: none;
-    padding: 14px 35px; border-radius: 50px;
-    font-weight: 800; font-size: 0.65rem; letter-spacing: 0.15em;
-    cursor: pointer; transition: 0.3s;
+.secure-scan {
+    background: #fff; color: #000; border: none; padding: 15px 35px;
+    border-radius: 50px; font-weight: 800; font-size: 0.65rem;
+    letter-spacing: 0.1em; cursor: pointer; display: flex; align-items: center; gap: 8px;
 }
 
-.scan-btn:hover { background: var(--intel-blue); transform: scale(1.05); }
-
-/* Bottom Protocol Stats */
-.protocol-footer {
+/* FOOTER BRIDGE */
+.footer-protocol {
     position: absolute; bottom: 80px; width: 100%;
-    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 25px;
 }
 
-.status-bar { font-size: 0.55rem; letter-spacing: 0.4em; color: var(--intel-blue); opacity: 0.6; }
+.status-indicator { font-size: 0.55rem; letter-spacing: 0.4em; color: var(--intel-blue); opacity: 0.6; }
 
-.nav-bridge {
-    display: flex; gap: 40px; margin-top: 20px;
-}
+.bridge-nav { display: flex; gap: 40px; }
 
-.nav-item {
+.bridge-link {
     text-decoration: none; color: #fff; font-size: 0.6rem;
-    letter-spacing: 0.2em; opacity: 0.4; border-bottom: 1px solid transparent;
-    transition: 0.3s; padding-bottom: 5px;
+    letter-spacing: 0.2em; opacity: 0.4; transition: 0.3s;
+    border-bottom: 1px solid transparent; padding-bottom: 5px;
 }
 
-.nav-item:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+.bridge-link:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
