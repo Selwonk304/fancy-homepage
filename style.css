@@ -1,82 +1,113 @@
 :root {
-    --bg: #000000;
-    --ink: #ffffff;
-    --accent: #bc9c22;
-    --intel-blue: #55daff;
+    --obsidian: #0A0A0A;
+    --lime: #BADA55;
+    --cyan: #00F2FF;
     --glass: rgba(255, 255, 255, 0.05);
-    --border: rgba(255, 255, 255, 0.1);
 }
 
-body, html {
-    margin: 0; padding: 0; width: 100%; height: 100%;
-    background: var(--bg); color: var(--ink);
-    font-family: 'Inter', sans-serif; overflow: hidden;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Hide default mouse */
 }
 
-/* VIDEO POSITIONING */
+body {
+    background-color: var(--obsidian);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Custom Cursor */
+.cursor-outer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border: 1px solid var(--lime);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.cursor-inner {
+    position: fixed;
+    top: 16px; left: 16px;
+    width: 8px; height: 8px;
+    background: var(--lime);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Background Video */
 .video-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: -1; 
-    filter: brightness(0.3) saturate(0.7);
+    position: fixed;
+    top: 0; left: 0;
+    width: 110%; /* Extra width for parallax movement */
+    height: 110%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.4) contrast(1.2);
 }
 
-/* TERMINAL HUD */
+/* Terminal Layout */
 .terminal-hud {
-    height: 100vh; display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
-    padding: 20px; text-align: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
 }
 
 .brand-reveal {
-    font-size: 0.7rem; letter-spacing: 0.8em; text-transform: uppercase;
-    margin-bottom: 60px; opacity: 0.8; font-weight: 300;
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 2rem;
+    background: linear-gradient(180deg, #FFF, #AAA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.capsule-wrapper { width: 100%; max-width: 800px; }
-
-.hud-stats {
-    display: flex; justify-content: space-between; 
-    font-size: 0.6rem; letter-spacing: 0.2em; font-weight: 800;
-    margin-bottom: 15px; padding: 0 15px;
-}
-
-.cyan-glow { color: var(--intel-blue); text-shadow: 0 0 10px var(--intel-blue); }
-
-/* FAVE CAPSULE */
+/* Capsule UI */
 .fave-capsule {
-    background: var(--glass); backdrop-filter: blur(20px);
-    border: 1px solid var(--border); border-radius: 100px;
-    padding: 8px; display: flex; align-items: center;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.icon-tray { display: flex; gap: 15px; padding: 0 20px; opacity: 0.4; }
-
-input {
-    background: none; border: none; color: #fff; flex: 1;
-    font-size: 1rem; padding: 15px; outline: none;
+#asset-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    width: 300px;
+    outline: none;
 }
 
 .secure-scan {
-    background: #fff; color: #000; border: none; padding: 15px 35px;
-    border-radius: 50px; font-weight: 800; font-size: 0.65rem;
-    letter-spacing: 0.1em; cursor: pointer; display: flex; align-items: center; gap: 8px;
+    background: var(--lime);
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s;
 }
 
-/* FOOTER BRIDGE */
-.footer-protocol {
-    position: absolute; bottom: 80px; width: 100%;
-    display: flex; flex-direction: column; align-items: center; gap: 25px;
+.secure-scan:hover {
+    transform: scale(1.05);
 }
-
-.status-indicator { font-size: 0.55rem; letter-spacing: 0.4em; color: var(--intel-blue); opacity: 0.6; }
-
-.bridge-nav { display: flex; gap: 40px; }
-
-.bridge-link {
-    text-decoration: none; color: #fff; font-size: 0.6rem;
-    letter-spacing: 0.2em; opacity: 0.4; transition: 0.3s;
-    border-bottom: 1px solid transparent; padding-bottom: 5px;
-}
-
-.bridge-link:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
