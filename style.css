@@ -1,72 +1,46 @@
-:root {
-    --cyan: #55daff;
-    --gold: #bc9c22;
-    --glass: rgba(255, 255, 255, 0.03);
+:root { --cyan: #55daff; --gold: #bc9c22; }
+
+/* Critical: body must be transparent for video to show */
+body, html { 
+    margin: 0; padding: 0; width: 100%; height: 100%; 
+    background: transparent; font-family: 'Inter', sans-serif; 
+    overflow: hidden; color: #fff; 
 }
 
-body, html {
-    margin: 0; padding: 0; width: 100%; height: 100%;
-    background: #000; font-family: 'Inter', sans-serif;
-    overflow: hidden; color: #fff;
+.video-bg { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    object-fit: cover; z-index: -1; filter: brightness(0.35); 
+    background: #000; /* Fallback color */
 }
 
-/* Fix: Ensure video is strictly in the background */
-.video-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: -1; filter: brightness(0.35);
+.terminal-hud { 
+    height: 100vh; display: flex; flex-direction: column; 
+    justify-content: center; align-items: center; position: relative; z-index: 10; 
 }
 
-.terminal-hud {
-    height: 100vh; display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    position: relative; z-index: 10;
+/* Fixed Spacing for the 'Bad-Ass' look */
+.brand-reveal { 
+    font-size: 3rem; font-weight: 800; letter-spacing: 0.2em; 
+    margin-bottom: 5rem; text-align: center; opacity: 0; 
 }
 
-/* Reveal spacing fixes */
-.brand-reveal {
-    font-size: 2.5rem; letter-spacing: 0.1em; font-weight: 800;
-    margin-bottom: 4rem; /* Increased spacing here */
-    text-transform: uppercase; opacity: 0; transform: translateY(30px);
-}
-
-.capsule-wrapper {
-    width: 90vw; max-width: 850px; opacity: 0; transform: translateY(30px);
-}
-
-.hud-stats {
-    display: flex; justify-content: space-between;
-    font-size: 0.75rem; letter-spacing: 0.2em; font-weight: 800;
-    margin-bottom: 1rem; padding: 0 1.5rem;
-}
+.capsule-wrapper { width: 90vw; max-width: 850px; opacity: 0; }
 
 .fave-capsule {
-    background: var(--glass); backdrop-filter: blur(25px);
+    background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px);
     border: 1px solid rgba(255,255,255,0.1); border-radius: 100px;
-    padding: 12px; display: flex; align-items: center;
+    padding: 12px; display: flex;
 }
 
-input {
-    background: none; border: none; color: #fff; flex: 1;
-    padding: 0 25px; font-size: 1.1rem; outline: none;
-}
+input { background: none; border: none; color: #fff; flex: 1; padding: 0 25px; font-size: 1.1rem; outline: none; }
 
-.secure-scan {
-    background: #fff; color: #000; border: none; padding: 18px 45px;
+.secure-scan { 
+    background: #fff; color: #000; border: none; padding: 18px 45px; 
     border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.4s;
 }
 
-.protocol-subtext {
-    margin-top: 2rem; font-size: 0.7rem; letter-spacing: 0.3em;
-    font-weight: 400; opacity: 0.7; text-align: left;
-}
-
-/* See Collections Button Positioning */
-.footer-nav {
-    position: absolute; bottom: 80px; opacity: 0;
-}
-
-.browse-btn {
-    border: 1px solid var(--gold); color: var(--gold);
-    padding: 12px 25px; text-decoration: none;
-    font-size: 0.7rem; letter-spacing: 0.3em; font-weight: 800;
+.browse-btn { 
+    position: absolute; bottom: 60px; border: 1px solid var(--gold); 
+    color: var(--gold); padding: 15px 30px; text-decoration: none; 
+    font-size: 0.7rem; letter-spacing: 0.4em; font-weight: 800;
 }
