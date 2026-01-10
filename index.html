@@ -9,20 +9,20 @@
         :root { --cyan: #22d3ee; --gold: #bc9c22; }
         body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; height: 100%; overflow: hidden; color: #fff; }
 
-        /* VIDEO: Fixed Path to Assets Folder */
+        /* VIDEO: Pointing to your verified assets path */
         .video-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; object-position: center; z-index: -1; 
-            opacity: 0; /* JS will reveal this safely */
+            opacity: 0; /* JS will reveal safely */
             background: #000;
         }
 
         .terminal-hud { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; padding: 20px; }
         .brand-reveal { font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 800; margin-bottom: 4.5rem; opacity: 0; text-align: center; }
         
-        /* 50px Logic Spacing to Prevent Overlap */
+        /* 50px Gap for Overlap Fix */
         .capsule-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 50px; opacity: 0; }
-        .fave-capsule { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 10px; display: flex; align-items: center; }
+        .fave-capsule { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 10px; display: flex; align-items: center; }
         
         input { background: none; border: none; color: #fff; flex: 1; padding: 0 20px; font-size: 1.1rem; outline: none; min-width: 0; }
         .run-scan { background: #fff; color: #000; border: none; padding: 15px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; white-space: nowrap; }
@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline preload="auto" class="video-bg" id="vid" onloadeddata="this.play();">
+    <video autoplay muted loop playsinline preload="auto" class="video-bg" id="vid" onloadedmetadata="this.play();">
         <source src="assets/fave-bg.mp4" type="video/mp4">
     </video>
 
@@ -54,17 +54,17 @@
     </main>
 
     <script>
-        // CSP-SAFE REVEAL: No eval or arbitrary strings
+        // CSP-SAFE REVEAL: Prevents 'eval' blocks
         window.addEventListener('load', function() {
             const vid = document.getElementById('vid');
-            const tl = gsap.timeline();
+            vid.play(); // Force play for iPhone
 
-            // Reveal Sequence
+            const tl = gsap.timeline();
+            // Reveal using opacity to bypass GPU security flags
             tl.to(vid, { opacity: 0.4, duration: 2, delay: 1 })
               .to(".brand-reveal", { opacity: 1, y: -20, duration: 1.2 }, "-=1.5")
               .to("#hud", { opacity: 1, duration: 1 }, "-=0.8");
 
-            // Appraisal Engine
             document.getElementById('trigger').onclick = function() {
                 const input = document.getElementById('art-input');
                 if(!input.value) return;
