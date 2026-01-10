@@ -2,12 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fancy Ape™ | Art & Intelligence Terminal</title>
+    <meta name="description" content="The Evolution of Art. Physical Provenance × Digital Intelligence.">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&family=Bodoni+Moda:ital,wght@1,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div class="cursor-outer"></div>
+    <div class="cursor-inner"></div>
 
     <video autoplay muted loop playsinline class="video-bg">
         <source src="https://cdn.midjourney.com/video/79c96afd-9202-4bbb-bbde-424ddf2df0c6/2.mp4" type="video/mp4">
@@ -25,15 +31,11 @@
             <div class="fave-capsule">
                 <div class="icon-tray">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
                 </div>
                 
-                <input type="text" placeholder="APPRAISE ARTWORK ASSET..." id="asset-input">
+                <input type="text" placeholder="APPRAISE ARTWORK..." id="asset-input" spellcheck="false">
                 
-                <button class="secure-scan" id="scan-trigger">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    #SECURE_SCAN
-                </button>
+                <button class="secure-scan" id="scan-trigger">#SECURE_SCAN</button>
             </div>
         </div>
 
@@ -41,33 +43,11 @@
             <div class="status-indicator">INTELLIGENCE LAYER ACTIVE // ART PROTOCOL 1.4</div>
             <nav class="bridge-nav">
                 <a href="https://shop.fancyape.com" class="bridge-link">COLLECTIONS</a>
-                <a href="#" class="bridge-link">PROVENANCE</a>
                 <a href="#" class="bridge-link">THE VAULT</a>
             </nav>
         </footer>
     </main>
 
-    <script>
-        const scanBtn = document.getElementById('scan-trigger');
-        const scoreDisplay = document.getElementById('conviction-score');
-        const input = document.getElementById('asset-input');
-
-        scanBtn.addEventListener('click', () => {
-            if(!input.value) return alert("ENTER ASSET DATA");
-            
-            let count = 20;
-            scanBtn.innerText = "ANALYZING...";
-            
-            const interval = setInterval(() => {
-                if (count >= 94) {
-                    clearInterval(interval);
-                    scanBtn.innerText = "#SCAN_COMPLETE";
-                } else {
-                    count++;
-                    scoreDisplay.innerText = count + "%";
-                }
-            }, 30);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

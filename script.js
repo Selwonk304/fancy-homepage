@@ -1,49 +1,46 @@
-// 1. Initialize GSAP for the HUD Reveal
 window.addEventListener('load', () => {
+    // 1. Reveal Timeline
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    tl.to(".brand-reveal", { opacity: 1, y: 0, duration: 1.5 })
+      .to(".capsule-wrapper", { opacity: 1, y: 0, duration: 1 }, "-=1")
+      .to(".footer-protocol", { opacity: 1, y: 0, duration: 1 }, "-=0.8");
 
-    tl.to(".brand-reveal", { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.5 })
-      .to(".capsule-wrapper", { opacity: 1, scale: 1, duration: 1 }, "-=0.8")
-      .to(".footer-protocol", { opacity: 1, duration: 1 }, "-=0.5");
-});
-
-// 2. Custom Cursor Movement (The "Ape Eye")
-const cursorInner = document.querySelector('.cursor-inner');
-const cursorOuter = document.querySelector('.cursor-outer');
-
-document.addEventListener('mousemove', (e) => {
-    const { clientX, clientY } = e;
-    
-    // Smooth follow for the outer ring
-    gsap.to(cursorOuter, { x: clientX - 20, y: clientY - 20, duration: 0.2 });
-    // Instant follow for the lime dot
-    gsap.to(cursorInner, { x: clientX - 4, y: clientY - 4, duration: 0 });
-});
-
-// 3. Scan Button Logic
-const scanBtn = document.getElementById('scan-trigger');
-const scoreDisplay = document.getElementById('conviction-score');
-const input = document.getElementById('asset-input');
-
-scanBtn.addEventListener('click', () => {
-    if(!input.value) {
-        // Shake animation if empty
-        gsap.to(".fave-capsule", { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
-        return;
+    // 2. Cursor logic - only if not on touch device
+    if (window.matchMedia("(pointer: fine)").matches) {
+        const cInner = document.querySelector('.cursor-inner');
+        const cOuter = document.querySelector('.cursor-outer');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cOuter, { x: e.clientX, y: e.clientY, duration: 0.3 });
+            gsap.to(cInner, { x: e.clientX, y: e.clientY, duration: 0.05 });
+        });
     }
-    
-    let obj = { value: 20 };
-    scanBtn.innerText = "ANALYZING...";
-    
-    gsap.to(obj, {
-        value: 94,
-        duration: 3,
-        ease: "power1.inOut",
-        onUpdate: () => {
-            scoreDisplay.innerText = Math.floor(obj.value) + "%";
-        },
-        onComplete: () => {
-            scanBtn.innerText = "#SCAN_COMPLETE";
+
+    // 3. Scan Button Logic
+    const scanBtn = document.getElementById('scan-trigger');
+    const score = document.getElementById('conviction-score');
+    const input = document.getElementById('asset-input');
+
+    scanBtn.addEventListener('click', () => {
+        if(!input.value) {
+            gsap.to(".fave-capsule", { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
+            return;
         }
+        
+        scanBtn.innerText = "ANALYZING...";
+        let obj = { val: 20 };
+        
+        gsap.to(obj, { 
+            val: 94, 
+            duration: 3, 
+            ease: "power1.inOut",
+            onUpdate: () => score.innerText = Math.floor(obj.val) + "%",
+            onComplete: () => {
+                scanBtn.innerText = "#SCAN_COMPLETE";
+                setTimeout(() => {
+                    alert("Analysis Complete. Confidence at 94%. Click Collections to materialize.");
+                    scanBtn.innerText = "#SECURE_SCAN";
+                }, 500);
+            }
+        });
     });
 });
