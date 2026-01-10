@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fancy Ape™</title>
     <style>
-        /* Force black background immediately */
+        /* Immediate black background to prevent white flashes */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
 
-        /* VIDEO: Reveal using CSS Animation (Bypasses CSP Eval Block) */
+        /* VIDEO: Handled entirely by CSS to bypass the 'eval' security block */
         #vid { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; z-index: -1; 
@@ -18,9 +18,10 @@
         }
 
         @keyframes fadeInVideo {
-            to { opacity: 0.45; }
+            to { opacity: 0.5; }
         }
 
+        /* Branding text that appears even if the video is still loading */
         .portal-text {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%);
@@ -29,11 +30,11 @@
             opacity: 0;
             text-align: center;
             animation: fadeInText 1.5s ease-out forwards;
-            animation-delay: 1.5s;
+            animation-delay: 1s;
         }
 
         @keyframes fadeInText {
-            to { opacity: 0.6; }
+            to { opacity: 0.8; }
         }
     </style>
 </head>
@@ -47,17 +48,5 @@
         <h1>FANCY APE™</h1>
     </div>
 
-    <script>
-        // Simple trigger that doesn't use eval()
-        window.onload = function() {
-            var v = document.getElementById('vid');
-            v.play().catch(function(e) { console.log("Playback interaction required"); });
-        };
-
-        // Mobile fallback: plays on first touch
-        window.addEventListener('touchstart', function() {
-            document.getElementById('vid').play();
-        }, {once: true});
-    </script>
 </body>
 </html>
