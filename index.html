@@ -1,58 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fancy Ape™</title>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
-
-        /* The Video: Removed 'animation' to ensure it renders immediately */
-        #vid { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: -1; 
-            opacity: 0.5; /* Hard-coded opacity for reliability */
-            background: #000;
-        }
-
-        .overlay {
-            position: absolute; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%);
-            text-align: center; width: 100%;
-        }
-
-        h1 { color: white; letter-spacing: 0.5em; font-weight: 300; margin-bottom: 40px; font-size: 1.5rem; }
-
-        .btn-shop {
-            display: inline-block; padding: 18px 40px;
-            border: 1px solid #bc9c22; color: #bc9c22;
-            text-decoration: none; font-size: 0.8rem;
-            letter-spacing: 0.3em; font-weight: bold;
-            background: rgba(0,0,0,0.4);
-        }
-    </style>
+    <title>Diagnostic</title>
+    <style>body { background: red; margin: 0; }</style> 
 </head>
 <body>
-
-    <video autoplay muted loop playsinline preload="auto" id="vid">
-        <source src="fave-bg.mp4?v=2" type="video/mp4">
-        <source src="/fave-bg.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline controls style="width: 100vw; height: 100vh;">
+        <source src="fave-bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
     </video>
-
-    <div class="overlay">
-        <h1>FANCY APE™</h1>
-        <a href="https://shop.fancyape.com/shop-art" class="btn-shop">ENTER SHOP</a>
-    </div>
-
-    <script>
-        // Force play on load and on first touch
-        function startVideo() {
-            var v = document.getElementById('vid');
-            v.play().catch(function(e) { console.log("Waiting for user..."); });
-        }
-        window.addEventListener('load', startVideo);
-        window.addEventListener('touchstart', startVideo, {once: true});
-        window.addEventListener('click', startVideo, {once: true});
-    </script>
 </body>
 </html>
